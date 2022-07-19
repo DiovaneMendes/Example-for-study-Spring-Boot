@@ -3,3 +3,9 @@ spring:
     mongodb:
       port: 27017
       database: pokemon-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
