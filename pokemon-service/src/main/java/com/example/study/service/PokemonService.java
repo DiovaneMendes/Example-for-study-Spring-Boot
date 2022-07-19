@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @Slf4j
 @Service
@@ -31,13 +32,33 @@ public class PokemonService {
   
   public PokemonModel search(final Integer id) {
     log.info("Searching pokémon.");
-    var optionalPokemon = repository.findById(id);
-    
-    if (optionalPokemon.isPresent()) {
-      cacheCounter.increment();
+    return searchCache()
+             .andThen(searchOnline(id))
+             .apply(id);
+  }
+  
+  private Function<Integer, Optional<PokemonModel>> searchCache() {
+    return (Integer id) -> {
+      var optionalPokemon = repository.findById(id);
+      
+      if (optionalPokemon.isPresent()) {
+        cacheCounter.increment();
+        return optionalPokemon;
+      }
+      return Optional.empty();
+    };
+  }
+  
+  private Function<Optional<PokemonModel>, PokemonModel> searchOnline(final Integer id) {
+    return (Optional<PokemonModel> optionalPokemon) -> {
+      if (optionalPokemon.isEmpty()) {
+        var pokemonModel = client.search(id, onlineCounter, errorCounter);
+        onlineCounter.increment();
+        repository.save(pokemonModel);
+        return pokemonModel;
+      }
+      
       return optionalPokemon.get();
-    }
-    
-    return client.search(id, onlineCounter, errorCounter);
+    };
   }
 }
