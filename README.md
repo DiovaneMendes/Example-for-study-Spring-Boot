@@ -1,2 +1,1 @@
-# Example-for-study-Spring-Boot
-Repository with examples Spring Boot
+# Example for study Spring Boot
