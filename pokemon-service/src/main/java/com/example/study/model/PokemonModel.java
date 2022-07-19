@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiExceptionModel {
-  private Long code;
-  private String message;
+public class PokemonModel {
+  @Id
+  private Integer id;
+  private String name;
+  private String weight;
 }
