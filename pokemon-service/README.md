@@ -1,3 +1,3 @@
 # Pokemon Service
 
-Example of service with client, cache mongo and metrics of use.
+Exemplo de serviço com client, cache MongoDB e métricas de uso.
