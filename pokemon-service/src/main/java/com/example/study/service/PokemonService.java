@@ -42,6 +42,7 @@ public class PokemonService {
       var optionalPokemon = repository.findById(id);
       
       if (optionalPokemon.isPresent()) {
+        log.info("Searching in cache...");
         cacheCounter.increment();
         return optionalPokemon;
       }
@@ -51,14 +52,12 @@ public class PokemonService {
   
   private Function<Optional<PokemonModel>, PokemonModel> searchOnline(final Integer id) {
     return (Optional<PokemonModel> optionalPokemon) -> {
-      if (optionalPokemon.isEmpty()) {
-        var pokemonModel = client.search(id, onlineCounter, errorCounter);
-        onlineCounter.increment();
-        repository.save(pokemonModel);
-        return pokemonModel;
-      }
+      if (optionalPokemon.isPresent()) return optionalPokemon.get();
       
-      return optionalPokemon.get();
+      var pokemonModel = client.search(id, errorCounter);
+      onlineCounter.increment();
+      repository.save(pokemonModel);
+      return pokemonModel;
     };
   }
 }

@@ -13,13 +13,11 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class PokemonClient {
   
-  public PokemonModel search(final Integer id, final Counter onlineCounter, Counter errorCounter) {
+  public PokemonModel search(final Integer id, final Counter errorCounter) {
     try {
       log.info("Searching online...");
       var url = String.format("https://pokeapi.co/api/v2/pokemon/%s", id);
-      PokemonModel pokemonModel = (new RestTemplate()).getForObject(url, PokemonModel.class);
-      onlineCounter.increment();
-      return pokemonModel;
+      return (new RestTemplate()).getForObject(url, PokemonModel.class);
     } catch (Exception ex) {
       log.error("Error searching for id: {}", id);
       errorCounter.increment();
