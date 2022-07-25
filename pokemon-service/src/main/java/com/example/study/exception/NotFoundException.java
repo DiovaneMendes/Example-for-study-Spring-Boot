@@ -3,7 +3,7 @@ package com.example.study.exception;
 import org.springframework.http.HttpStatus;
 
 public class NotFoundException extends ApiException {
-  private static String message = "Pokémon com id passado não existe!";
+  private static String message = "Pokemon with past id doesn't exist!";
   
   public NotFoundException() {
     super(message);

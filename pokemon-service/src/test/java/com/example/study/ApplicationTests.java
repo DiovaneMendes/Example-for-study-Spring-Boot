@@ -1,13 +1,17 @@
 package com.example.study;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+@DisplayName("Application")
 class ApplicationTests {
-
+	
 	@Test
-	void contextLoads() {
+	@DisplayName("Teste de chamada de aplicação")
+	void testeChamadaAplicacao() {
+		assertDoesNotThrow(() -> Application.main(new String[] {}));
 	}
 
 }

@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class SpriteModel {
 
   @JsonProperty("front_default")
-  @ApiModelProperty(value = "frontDefault", example = "https://exemplo/PokeAPI/sprites/master/sprites/pokemon/1.png")
+  @ApiModelProperty(value = "front_default", example = "https://exemple/PokeAPI/sprites/master/sprites/pokemon/1.png")
   private String frontDefault;
 }

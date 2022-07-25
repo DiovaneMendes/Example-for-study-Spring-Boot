@@ -16,9 +16,11 @@ import java.util.function.Function;
 @Service
 public class PokemonService {
   
+  private final Counter cacheCounter;
+  private final Counter errorCounter;
+  private final Counter onlineCounter;
   private final PokemonClient client;
   private final PokemonRepository repository;
-  private final Counter cacheCounter, errorCounter, onlineCounter;
   
   public PokemonService(final PokemonClient client,
                         final MeterRegistry meterRegistry,
@@ -53,8 +55,9 @@ public class PokemonService {
   private Function<Optional<PokemonModel>, PokemonModel> searchOnline(final Integer id) {
     return (Optional<PokemonModel> optionalPokemon) -> {
       if (optionalPokemon.isPresent()) return optionalPokemon.get();
-      
-      var pokemonModel = client.search(id, errorCounter);
+  
+      log.info("Searching online...");
+      var pokemonModel = client.searchById(id, errorCounter);
       onlineCounter.increment();
       repository.save(pokemonModel);
       return pokemonModel;
